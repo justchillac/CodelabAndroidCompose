@@ -13,6 +13,7 @@
   -->
 <resources>
     <string name="app_name">MySoothe</string>
+    <string name="search">Search</string>
     <string name="favorite_collections">Favorite Collections</string>
     <string name="align_your_body">Align your Body</string>
     <string name="ab1_inversions">Inversions</string>
