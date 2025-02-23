@@ -324,7 +324,7 @@ fun HomeSectionPreview() {
     } }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE, heightDp = 180)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun ScreenContentPreview() {
     MySootheTheme { HomeScreen() }
