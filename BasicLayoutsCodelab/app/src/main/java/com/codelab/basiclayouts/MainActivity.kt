@@ -64,6 +64,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,9 +83,11 @@ import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MySootheApp() }
+        setContent {val windowSizeClass = calculateWindowSizeClass(this)
+            MySootheApp(windowSizeClass) }
     }
 }
 
@@ -216,16 +222,35 @@ fun HomeSection(
 }
 
 // Step: Home screen - Scrolling
+//@Composable
+//fun HomeScreen(modifier: Modifier = Modifier) {
+//    Column(modifier.
+//    verticalScroll(rememberScrollState())) {
+//        Spacer(Modifier.height(16.dp))
+//        SearchBar(Modifier.padding(horizontal = 16.dp))
+//        HomeSection(title = R.string.align_your_body) {
+//            AlignYourBodyRow()
+//        }
+//        HomeSection(title = R.string.favorite_collections) {
+//            FavoriteCollectionsGrid()
+//        }
+//        Spacer(Modifier.height(16.dp))
+//    }
+//}
+
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    Column(modifier.
-    verticalScroll(rememberScrollState())) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp) // Add horizontal padding if needed
+    ) {
         Spacer(Modifier.height(16.dp))
-        SearchBar()
-        HomeSection(R.string.align_your_body) {
+        SearchBar(Modifier.padding(horizontal = 16.dp))
+        HomeSection(title = R.string.align_your_body) {
             AlignYourBodyRow()
         }
-        HomeSection(R.string.favorite_collections) {
+        HomeSection(title = R.string.favorite_collections) {
             FavoriteCollectionsGrid()
         }
         Spacer(Modifier.height(16.dp))
@@ -279,37 +304,41 @@ fun MySootheAppPortrait() {
 // Step: Bottom navigation - Material
 @Composable
 private fun SootheNavigationRail(modifier: Modifier = Modifier) {
-    NavigationRail(containerColor = MaterialTheme.colorScheme.background,
-        modifier = modifier.padding(start = 8.dp, end = 8.dp)) {
-        Column(modifier = modifier.fillMaxHeight(),
+    NavigationRail(
+        modifier = modifier.padding(start = 8.dp, end = 8.dp),
+        containerColor = MaterialTheme.colorScheme.background,
+    ) {
+        Column(
+            modifier = modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             NavigationRailItem(
-                selected = true,
-                onClick = {},
                 icon = {
                     Icon(
-                        imageVector = Icons.Filled.Spa,
+                        imageVector = Icons.Default.Spa,
                         contentDescription = null
                     )
                 },
                 label = {
-                    Text(text = stringResource(R.string.bottom_navigation_home))
-                }
+                    Text(stringResource(R.string.bottom_navigation_home))
+                },
+                selected = true,
+                onClick = {}
             )
             Spacer(modifier = Modifier.height(8.dp))
             NavigationRailItem(
-                selected = false,
-                onClick = {},
                 icon = {
                     Icon(
-                        imageVector = Icons.Filled.AccountCircle,
+                        imageVector = Icons.Default.AccountCircle,
                         contentDescription = null
                     )
                 },
                 label = {
-                    Text(text = stringResource(R.string.bottom_navigation_profile))
-                }
+                    Text(stringResource(R.string.bottom_navigation_profile))
+                },
+                selected = false,
+                onClick = {}
             )
         }
     }
@@ -318,22 +347,33 @@ private fun SootheNavigationRail(modifier: Modifier = Modifier) {
 // Step: Landscape Mode
 @Composable
 fun MySootheAppLandscape(){
-    Surface(color = MaterialTheme.colorScheme.surface) { //When you used a Scaffold in the portrait
+        //When you used a Scaffold in the portrait
         // version, it also took care of setting the content color to background for you. To set
         // the color of the Navigation Rail, wrap the Row in a Surface and set it to background color.
         MySootheTheme {
-            Row {
-                SootheNavigationRail()
-                HomeScreen()
+            Surface(color = MaterialTheme.colorScheme.background) {
+                Row {
+                    SootheNavigationRail()
+                    HomeScreen()
+                }
             }
         }
-    }
 }
 
 // Step: MySoothe App
 @Composable
-fun MySootheApp() {
-    // Implement composable here
+fun MySootheApp(windowSize: WindowSizeClass) {
+    when (windowSize.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            MySootheAppPortrait()
+        }
+        WindowWidthSizeClass.Medium ->{
+            MySootheAppLandscape()
+        }
+        WindowWidthSizeClass.Expanded -> {
+            MySootheAppLandscape()
+        }
+    }
 }
 
 private val alignYourBodyData = listOf(
