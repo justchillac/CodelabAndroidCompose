@@ -25,10 +25,12 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -55,6 +57,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -275,13 +279,55 @@ fun MySootheAppPortrait() {
 // Step: Bottom navigation - Material
 @Composable
 private fun SootheNavigationRail(modifier: Modifier = Modifier) {
-    // Implement composable here
+    NavigationRail(containerColor = MaterialTheme.colorScheme.background,
+        modifier = modifier.padding(start = 8.dp, end = 8.dp)) {
+        Column(modifier = modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            NavigationRailItem(
+                selected = true,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Spa,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(text = stringResource(R.string.bottom_navigation_home))
+                }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(text = stringResource(R.string.bottom_navigation_profile))
+                }
+            )
+        }
+    }
 }
 
 // Step: Landscape Mode
 @Composable
 fun MySootheAppLandscape(){
-    // Implement composable here
+    Surface(color = MaterialTheme.colorScheme.surface) { //When you used a Scaffold in the portrait
+        // version, it also took care of setting the content color to background for you. To set
+        // the color of the Navigation Rail, wrap the Row in a Surface and set it to background color.
+        MySootheTheme {
+            Row {
+                SootheNavigationRail()
+                HomeScreen()
+            }
+        }
+    }
 }
 
 // Step: MySoothe App
