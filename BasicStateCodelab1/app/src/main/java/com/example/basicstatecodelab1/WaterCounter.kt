@@ -29,10 +29,13 @@ fun WaterCounter(modifier: Modifier = Modifier){   //with the new state, creatin
         //But notice that without remember the last value of the mutableState will not be preserved
         //For example we can see that without remember the value of count will be set to 0 again
         //So to preserve the last mutated value we need to use the remember composable inline function
+        if(count>0){
         Text(
             text = "You've had $count glasses"
         )
-        Button(
+            }
+        Button(enabled = if(count<10) true else false,  //This explains
+//            how State drives which elements are present in the UI at a given moment.
             onClick = {count++},
             modifier = Modifier.padding(top = 8.dp)
         ) { Text(text = "Add one") }
