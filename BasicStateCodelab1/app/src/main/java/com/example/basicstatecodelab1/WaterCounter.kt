@@ -35,10 +35,13 @@ fun WaterCounter(modifier: Modifier = Modifier){   //with the new state, creatin
         //So to preserve the last mutated value we need to use the remember composable inline function
         if(count>0){
             var showTask by remember { mutableStateOf(true) }
-            if(showTask){
-                WellnessTaskItem(taskName = "Have you taken your 15min walk today",
-                    onClose = {showTask = false})
-            }
+//            var checkedState by remember { mutableStateOf(false) }
+//            if(showTask){
+//                WellnessTaskItem(taskName = "Have you taken your 15min walk today",
+//                    checked = checkedState,
+//                    onCheckedChange = {newValue -> checkedState = newValue},
+//                    onClose = {showTask = false})
+//            }
         Text(
             text = "You've had $count glasses"
         )
