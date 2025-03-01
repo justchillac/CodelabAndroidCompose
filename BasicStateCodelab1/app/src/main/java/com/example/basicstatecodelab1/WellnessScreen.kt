@@ -7,16 +7,24 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WellnessScreen(modifier: Modifier = Modifier){
-    LazyColumn(modifier = modifier) {
-//        WaterCounter(modifier)
-        item{
-            StatefulCounter(modifier)
-        }
+fun WellnessScreen(modifier: Modifier = Modifier,
+                   wellnessViewModel: WellnessViewModel = viewModel()
+){
+    Column(modifier = modifier) {
+//      WaterCounter(modifier)
+        StatefulCounter(modifier)
 
-        val list = getWellnessTasks().toMutableStateList()
+        WellnessTasksList(list = wellnessViewModel.tasks,
+            onCheckedTask = {task, checked ->
+                wellnessViewModel.changeTaskChecked(task, checked = checked)
+            },
+            onCloseTask = {task->wellnessViewModel.remove(task)}
+            )
+
+//        val list = getWellnessTasks().toMutableStateList()
         //Using mutable objects for this, such as ArrayList<T> or mutableListOf, won't work.
         // These types won't notify Compose that the items in the list have changed and schedule a
         // recomposition of the UI.

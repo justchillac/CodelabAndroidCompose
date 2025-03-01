@@ -20,6 +20,11 @@ import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+//UI logic relates to how to display state changes on the screen
+//business logic is what to do with state changes (for example making a payment
+//ViewModels survive configuration changes, so they have a longer lifetime than the Composition
+//it's a good practice to keep the UI logic and business logic separated from the UI state and migrate it to a ViewModel.
+
 @Composable   //We refer to the Composition as the description of
 // the UI built by Compose when it executes composables.
 fun WaterCounter(modifier: Modifier = Modifier){   //with the new state, creating an updated UI—this

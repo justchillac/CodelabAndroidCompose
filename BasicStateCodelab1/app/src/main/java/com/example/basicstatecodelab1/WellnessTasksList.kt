@@ -9,18 +9,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 
-//This method just generates fake data
-fun getWellnessTasks() = List(30){i->WellnessTask(i, "Task # $i")} //In a real app we get data from the
-//data layer
-
 @Composable
-fun WellnessTasksList(list: List<WellnessTask> = rememberSaveable {getWellnessTasks()},
+fun WellnessTasksList(list: List<WellnessTask>,
+                      onCheckedTask: (WellnessTask, Boolean)->Unit,
                       onCloseTask: (WellnessTask)->Unit,
                       modifier: Modifier = Modifier){
     LazyColumn(modifier = modifier) {
         items(items = list,
             key = {task->task.id}){task->
-            WellnessTaskItem(taskName = task.label, onClose = {onCloseTask(task)})
+            WellnessTaskItem(taskName = task.label,
+                onClose = {onCloseTask(task)},
+                checked = task.checked,
+                onCheckedChange = {
+                    checked->onCheckedTask(task, checked)
+                })
         }
     }
 }
